@@ -31,5 +31,5 @@ jobs:
         run: |
           pwd
           ls -la
-          docker run --rm -v $(pwd):$(pwd) -w $(pwd) wasi-build:latest ./run.sh
+          docker run --rm -v $(pwd):$(pwd) -w $(pwd) wasi-build:latest /bin/bash -c 'export PATH=$PATH:/root/.wasmtime/bin; ./run.sh'
           ls -la
