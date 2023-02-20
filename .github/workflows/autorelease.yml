@@ -1,0 +1,35 @@
+name: Python
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Wasi Python
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Base Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker
+          push: false
+          load: true
+          tags: wasi-build
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Python
+        run: |
+          pwd
+          ls -la
+          docker run -it --rm -v $(pwd):$(pwd) -w $(pwd) wasi-build:latest ./run.sh
+          ls -la
