@@ -33,3 +33,11 @@ jobs:
           ls -la
           docker run --rm -v $(pwd):$(pwd) -w $(pwd) wasi-build:latest /bin/bash -c 'export PATH=$PATH:/root/.wasmtime/bin; ./run.sh'
           ls -la
+
+      - name: Github Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            ./wasi-python3.*.wasm
